@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../../models/User.js"
+import User from "../models/User.js"
  
 // USER REGISTER
 //async=call api, req=record what we got in UI, res=response from database  
