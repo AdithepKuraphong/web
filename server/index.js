@@ -9,7 +9,11 @@ import morgan from "morgan";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
+//import postRoutes from "./routes/posts/js"; //1.15
 import { register } from "./controllers/auth.js";
+//import {createpost} from "./controllers/posts.js"; //1.15
+import { verifytoken } from "./middleware/auth.js";
 
 // CONFIGURATIONS
 
@@ -41,11 +45,13 @@ const upload = multer({ Storage });
 
 // ROUTE FILE
 
-app.post("/auth/register", upload.single("picture"), register); // from auth regis to pic regis
+app.post("/auth/register", upload.single("picture"), verifytoken, register); // from auth regis to pic regisม verfytoken can be optional?
+//app.post("/post", verifytoken, upload.single("picture"), createpost); 1.15
 
 // ROUTE ONLY
-
+app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
+//app.use("/posts", postRoutes); 1.15
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
