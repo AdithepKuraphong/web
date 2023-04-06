@@ -1,7 +1,7 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-/* CREATE */
+// CREATE
 export const createpost = async (req, res) => {
   try {
     const { userId, description, picturepath } = req.body;
@@ -14,19 +14,19 @@ export const createpost = async (req, res) => {
       description,
       userPicturePath: user.picturepath,
       picturepath,
-      likes: {},
+      likes: {}, //"someid" : true like in array
       comments: [],
     });
-    await newPost.save();
+    await newPost.save(); //save post
 
-    const post = await Post.find();
+    const post = await Post.find(); //grab(all) post
     res.status(201).json(post);
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
 };
 
-/* READ */
+// READ
 export const getFeedPosts = async (req, res) => {
   try {
     const post = await Post.find();
@@ -46,21 +46,21 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
-/* UPDATE */
+// UPDATE
 export const likepost = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
-    const post = await Post.findById(id);
-    const isLiked = post.likes.get(userId);
+    const post = await Post.findById(id); //grab some post
+    const isLiked = post.likes.get(userId); //liked or not?
 
-    if (isLiked) {
+    if (isLiked) { //if got liked -> rem it
       post.likes.delete(userId);
     } else {
       post.likes.set(userId, true);
     }
 
-    const updatedPost = await Post.findByIdAndUpdate(
+    const updatedPost = await Post.findByIdAndUpdate( //updatelike
       id,
       { likes: post.likes },
       { new: true }

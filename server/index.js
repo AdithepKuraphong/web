@@ -14,6 +14,9 @@ import postRoutes from "./routes/post.js";
 import { register } from "./controllers/auth.js";
 import {createpost} from "./controllers/posts.js";
 import { verifytoken } from "./middleware/auth.js";
+import User from "./models/User.js";
+import Post from "./models/Post.js";
+import { users, posts} from "./data/index.js";
 
 // CONFIGURATIONS
 
@@ -60,4 +63,9 @@ mongoose.connect(process.env.MONGO_URL,{
     useUnifiedTopology : true,
 }).then(() => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+
+    // //ADD DATA TIME (FAKE DATA)(#Only one time [run->comment it]?)
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+
 }).catch((error) => console.log(`${error} did not connect`))
